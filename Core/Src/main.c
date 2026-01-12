@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "stm32u3xx_nucleo.h"
 #include "ads1220.h"
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -106,6 +107,17 @@ int main(void)
   /* USER CODE BEGIN 2 */
   ADS1220_Init();
   ADS1220_StartConversion();
+
+  LCD_Config_t lcd_config = {
+      .hspi = &hspi1,
+      .cs_port = LCD_CS_GPIO_Port,
+      .cs_pin = LCD_CS_Pin,
+      .disp_port = LCD_DISP_GPIO_Port,
+      .disp_pin = LCD_DISP_Pin,
+      .width = 176,
+      .height = 176
+  };
+  LCD_Init(&lcd_config);
   /* USER CODE END 2 */
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
@@ -131,8 +143,6 @@ int main(void)
 
     int32_t adc_value = ADS1220_ReadData();
     printf("ADC: %ld\r\n", adc_value);
-
-    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
