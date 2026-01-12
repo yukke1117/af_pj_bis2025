@@ -32,13 +32,16 @@ extern "C" {
 #define ADS1220_REG3            3
 
 /* ADS1220 Constants ---------------------------------------------------------*/
-#define ADS1220_VREF_UV         2048000   // 内部基準電圧 (uV)
+#define ADS1220_VREF_MV         2048      // 内部基準電圧 (mV)
+#define ADS1220_VREF_V          2.048f    // 内部基準電圧 (V)
 #define ADS1220_RESOLUTION      8388608   // 2^23 (24bit ADC)
+#define ADS1220_GAIN            1         // ゲイン設定
 
 /* Exported functions prototypes ---------------------------------------------*/
 uint8_t ADS1220_ReadRegister(uint8_t reg_addr);
 void ADS1220_WriteRegister(uint8_t reg_addr, uint8_t value);
 int32_t ADS1220_ReadData(void);
+float ADS1220_ConvertToVoltage(int32_t adc_value);
 void ADS1220_Init(void);
 void ADS1220_StartConversion(void);
 

@@ -82,6 +82,15 @@ int32_t ADS1220_ReadData(void) {
 }
 
 /**
+  * @brief  Convert ADC value to voltage
+  * @param  adc_value: 24-bit signed ADC value
+  * @retval Voltage in V
+  */
+float ADS1220_ConvertToVoltage(int32_t adc_value) {
+    return (float)adc_value * ADS1220_VREF_V / (float)ADS1220_RESOLUTION / (float)ADS1220_GAIN;
+}
+
+/**
   * @brief  Initialize ADS1220 with default configuration
   * @retval None
   */

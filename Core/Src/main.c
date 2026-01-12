@@ -117,7 +117,7 @@ int main(void)
       .width = 176,
       .height = 176
   };
-  LCD_Init(&lcd_config);
+  //LCD_Init(&lcd_config);
   /* USER CODE END 2 */
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
@@ -142,7 +142,9 @@ int main(void)
     while (HAL_GPIO_ReadPin(ADC_DRDY_GPIO_Port, ADC_DRDY_Pin) == GPIO_PIN_SET);
 
     int32_t adc_value = ADS1220_ReadData();
-    printf("ADC: %ld\r\n", adc_value);
+    float voltage = ADS1220_ConvertToVoltage(adc_value);
+    printf("Voltage: %.6f V\r\n", voltage);
+    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
