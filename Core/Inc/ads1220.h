@@ -37,11 +37,16 @@ extern "C" {
 #define ADS1220_RESOLUTION      8388608   // 2^23 (24bit ADC)
 #define ADS1220_GAIN            1         // ゲイン設定
 
+/* Current Calculation Constants ---------------------------------------------*/
+#define ADS1220_VB_V            0.5f      // バイアス電圧 (V)
+#define ADS1220_R_OHM           50000.0f  // 抵抗値 (Ω)
+
 /* Exported functions prototypes ---------------------------------------------*/
 uint8_t ADS1220_ReadRegister(uint8_t reg_addr);
 void ADS1220_WriteRegister(uint8_t reg_addr, uint8_t value);
 int32_t ADS1220_ReadData(void);
 float ADS1220_ConvertToVoltage(int32_t adc_value);
+float ADS1220_ConvertToCurrent(float voltage);
 void ADS1220_Init(void);
 void ADS1220_StartConversion(void);
 

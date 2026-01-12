@@ -143,7 +143,8 @@ int main(void)
 
     int32_t adc_value = ADS1220_ReadData();
     float voltage = ADS1220_ConvertToVoltage(adc_value);
-    printf("Voltage: %.6f V\r\n", voltage);
+    float current = ADS1220_ConvertToCurrent(voltage);
+    printf("V: %.6f V, I: %.3f uA\r\n", voltage, current * 1e6f);
     HAL_Delay(100);
     /* USER CODE END WHILE */
 

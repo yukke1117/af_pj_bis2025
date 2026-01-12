@@ -91,6 +91,15 @@ float ADS1220_ConvertToVoltage(int32_t adc_value) {
 }
 
 /**
+  * @brief  Convert voltage to current: I = (V - Vb) / R
+  * @param  voltage: Measured voltage in V
+  * @retval Current in A
+  */
+float ADS1220_ConvertToCurrent(float voltage) {
+    return (voltage - ADS1220_VB_V) / ADS1220_R_OHM;
+}
+
+/**
   * @brief  Initialize ADS1220 with default configuration
   * @retval None
   */
