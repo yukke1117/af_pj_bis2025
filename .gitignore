@@ -1,4 +1,5 @@
 # Build outputs
+build/
 Debug/
 Release/
 *.o
@@ -14,9 +15,17 @@ Release/
 .cproject
 .project
 
+# VSCode
+.vscode/
+.clangd
+.cache/
+
 # EWARM build outputs
 EWARM/settings/
 EWARM/*.dep
 EWARM/*/Obj/
 EWARM/*/List/
 EWARM/*/Exe/
+
+# STM32CubeIDE
+*.launch

@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include "stm32u3xx_nucleo.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,6 +119,8 @@ int main(void)
   {
     Error_Handler();
   }
+
+  printf("Welcome to STM32 world !\n\r");
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
