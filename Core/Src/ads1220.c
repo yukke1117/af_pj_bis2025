@@ -71,9 +71,11 @@ int32_t ADS1220_ReadData(void) {
     HAL_GPIO_WritePin(ADC_CS_GPIO_Port, ADC_CS_Pin, GPIO_PIN_SET);
 
     // 3バイトを1つの32ビット変数に結合
+    // int型にすると負の数を扱えるようになる
     int32_t result = ((int32_t)data[0] << 16) | ((int32_t)data[1] << 8) | (int32_t)data[2];
 
     // 24ビットの符号拡張（マイナス値を正しく扱う処理）
+    // 0x00800000 = 0000 0000 1000 0000 0000 0000 0000 0000
     if (result & 0x00800000) {
         result |= 0xFF000000;
     }
@@ -120,4 +122,22 @@ void ADS1220_StartConversion(void) {
     HAL_GPIO_WritePin(ADC_CS_GPIO_Port, ADC_CS_Pin, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi2, &start_cmd, 1, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(ADC_CS_GPIO_Port, ADC_CS_Pin, GPIO_PIN_SET);
+}
+
+/**
+  * @brief  Set ADC input channel (MUX setting)
+  * @param  channel: ADS1220_CH1 (AIN0-AIN1) or ADS1220_CH2 (AIN2-AIN3)
+  * @retval None
+  */
+void ADS1220_SetChannel(ADS1220_Channel_t channel) {
+    uint8_t reg0 = ADS1220_ReadRegister(0);
+    reg0 &= 0x0F;  // MUXビット(上位4bit)をクリア
+
+    if (channel == ADS1220_CH1) {
+        reg0 |= ADS1220_MUX_AIN0_AIN1;
+    } else {
+        reg0 |= ADS1220_MUX_AIN2_AIN3;
+    }
+
+    ADS1220_WriteRegister(0, reg0);
 }

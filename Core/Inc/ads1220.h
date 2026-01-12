@@ -31,6 +31,16 @@ extern "C" {
 #define ADS1220_REG2            2
 #define ADS1220_REG3            3
 
+/* ADS1220 MUX Settings (upper 4 bits of REG0) -------------------------------*/
+#define ADS1220_MUX_AIN0_AIN1   0x00  // CH1: AIN0-AIN1 (MUX=0000)
+#define ADS1220_MUX_AIN2_AIN3   0x50  // CH2: AIN2-AIN3 (MUX=0101)
+
+/* Channel enumeration -------------------------------------------------------*/
+typedef enum {
+    ADS1220_CH1 = 0,  // AIN0-AIN1
+    ADS1220_CH2 = 1   // AIN2-AIN3
+} ADS1220_Channel_t;
+
 /* ADS1220 Constants ---------------------------------------------------------*/
 #define ADS1220_VREF_MV         2048      // 内部基準電圧 (mV)
 #define ADS1220_VREF_V          2.048f    // 内部基準電圧 (V)
@@ -49,6 +59,7 @@ float ADS1220_ConvertToVoltage(int32_t adc_value);
 float ADS1220_ConvertToCurrent(float voltage);
 void ADS1220_Init(void);
 void ADS1220_StartConversion(void);
+void ADS1220_SetChannel(ADS1220_Channel_t channel);
 
 #ifdef __cplusplus
 }
