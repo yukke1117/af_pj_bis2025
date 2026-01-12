@@ -66,6 +66,8 @@ void Error_Handler(void);
 #define RCC_OSC32_OUT_GPIO_Port GPIOC
 #define ADC_DRDY_Pin GPIO_PIN_15
 #define ADC_DRDY_GPIO_Port GPIOB
+#define ADC_CS_Pin GPIO_PIN_7
+#define ADC_CS_GPIO_Port GPIOC
 #define LCD_EXTCOMIN_Pin GPIO_PIN_8
 #define LCD_EXTCOMIN_GPIO_Port GPIOC
 #define LCD_CS_Pin GPIO_PIN_9

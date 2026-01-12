@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "stm32u3xx_nucleo.h"
+#include "ads1220.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,7 +104,8 @@ int main(void)
   MX_ADC2_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-
+  ADS1220_Init();
+  ADS1220_StartConversion();
   /* USER CODE END 2 */
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
@@ -120,13 +122,17 @@ int main(void)
     Error_Handler();
   }
 
-  printf("Welcome to STM32 world !\n\r");
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // DRDYがLowになるまで待つ
+    while (HAL_GPIO_ReadPin(ADC_DRDY_GPIO_Port, ADC_DRDY_Pin) == GPIO_PIN_SET);
 
+    int32_t adc_value = ADS1220_ReadData();
+    printf("ADC: %ld\r\n", adc_value);
+
+    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -446,7 +452,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : ADC_DRDY_Pin */
   GPIO_InitStruct.Pin = ADC_DRDY_Pin;
@@ -454,8 +460,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(ADC_DRDY_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LCD_EXTCOMIN_Pin LCD_CS_Pin LCD_DISP_Pin */
-  GPIO_InitStruct.Pin = LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin;
+  /*Configure GPIO pins : ADC_CS_Pin LCD_EXTCOMIN_Pin LCD_CS_Pin LCD_DISP_Pin */
+  GPIO_InitStruct.Pin = ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
