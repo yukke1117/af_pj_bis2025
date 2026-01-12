@@ -46,6 +46,10 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     Core/Src/ads1220.c
+    Core/Src/lcd.c
+    Core/Src/lcd_text.c
+    Core/Src/font8x8_basic.c
+    Core/Src/image_logo.c
 )
 
 # Add include paths
