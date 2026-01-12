@@ -1,0 +1,22 @@
+# Build outputs
+Debug/
+Release/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+
+# IDE settings
+.settings/
+.cproject
+.project
+
+# EWARM build outputs
+EWARM/settings/
+EWARM/*.dep
+EWARM/*/Obj/
+EWARM/*/List/
+EWARM/*/Exe/
