@@ -117,7 +117,9 @@ int main(void)
       .width = 176,
       .height = 176
   };
-  //LCD_Init(&lcd_config);
+  LCD_Init(&lcd_config);
+  LCD_DrawString4bit(20, "Hello LCD!");
+  LCD_DrawString4bit(40, "Test message");
   /* USER CODE END 2 */
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
@@ -156,6 +158,9 @@ int main(void)
 
     printf("CH1 V:%.6f V, I:%.3f uA | CH2 V:%.6f V, I:%.3f uA\r\n",
            v1, i1 * 1e6f, v2, i2 * 1e6f);
+
+    // LCD EXTCOMIN トグル (焼き付き防止)
+    HAL_GPIO_TogglePin(LCD_EXTCOMIN_GPIO_Port, LCD_EXTCOMIN_Pin);
 
     HAL_Delay(100);
     /* USER CODE END WHILE */
@@ -477,7 +482,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LCD_DISP_GPIO_Port, LCD_DISP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : ADC_DRDY_Pin */
   GPIO_InitStruct.Pin = ADC_DRDY_Pin;
@@ -485,12 +493,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(ADC_DRDY_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : ADC_CS_Pin LCD_EXTCOMIN_Pin LCD_CS_Pin LCD_DISP_Pin */
-  GPIO_InitStruct.Pin = ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin|LCD_DISP_Pin;
+  /*Configure GPIO pins : ADC_CS_Pin LCD_EXTCOMIN_Pin LCD_CS_Pin */
+  GPIO_InitStruct.Pin = ADC_CS_Pin|LCD_EXTCOMIN_Pin|LCD_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LCD_DISP_Pin */
+  GPIO_InitStruct.Pin = LCD_DISP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LCD_DISP_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

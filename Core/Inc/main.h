@@ -78,10 +78,10 @@ void Error_Handler(void);
 #define DEBUG_JTCK_SWCLK_GPIO_Port GPIOA
 #define DEBUG_JTDI_Pin GPIO_PIN_15
 #define DEBUG_JTDI_GPIO_Port GPIOA
-#define LCD_DISP_Pin GPIO_PIN_10
-#define LCD_DISP_GPIO_Port GPIOC
 #define DEBUG_JTDO_SWO_Pin GPIO_PIN_3
 #define DEBUG_JTDO_SWO_GPIO_Port GPIOB
+#define LCD_DISP_Pin GPIO_PIN_8
+#define LCD_DISP_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
