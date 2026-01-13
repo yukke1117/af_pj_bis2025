@@ -42,6 +42,48 @@ void LCD_DrawString4bit(uint16_t y0, const char *str)
     }
 }
 
+/* スケール付き文字列描画 */
+void LCD_DrawString4bitScaled(uint16_t y0, const char *str, uint8_t scale)
+{
+    const LCD_Config_t *cfg = LCD_GetConfig();
+    const uint16_t bytes_per_line = cfg->width / 2;
+    const uint16_t len = strlen(str);
+    uint8_t rowbuf[128];
+
+    for (uint8_t font_row = 0; font_row < 8; ++font_row) {
+        /* スケール分の行を描画 */
+        for (uint8_t sy = 0; sy < scale; ++sy) {
+            /* 1行分を白で初期化 */
+            for (uint16_t i = 0; i < bytes_per_line && i < sizeof(rowbuf); i++) {
+                rowbuf[i] = 0xEE;
+            }
+
+            /* 各文字を処理 */
+            for (uint16_t char_idx = 0; char_idx < len; ++char_idx) {
+                uint8_t ch = str[char_idx] - 32;
+                uint8_t font_byte = font8x8_basic[ch][font_row];
+
+                for (uint8_t bit = 0; bit < 8; ++bit) {
+                    if ((font_byte >> bit) & 1) {
+                        /* スケール分のピクセルを描画 */
+                        for (uint8_t sx = 0; sx < scale; ++sx) {
+                            uint16_t x = char_idx * 8 * scale + bit * scale + sx;
+                            if (x < cfg->width) {
+                                uint16_t byte_idx = x / 2;
+                                if (x & 1)
+                                    rowbuf[byte_idx] = (rowbuf[byte_idx] & 0xF0) | PIX_ON;
+                                else
+                                    rowbuf[byte_idx] = (rowbuf[byte_idx] & 0x0F) | (PIX_ON << 4);
+                            }
+                        }
+                    }
+                }
+            }
+            LCD_SendLine4bit(y0 + font_row * scale + sy, rowbuf);
+        }
+    }
+}
+
 /* 横スクロールアニメーション */
 void LCD_ScrollText(uint16_t y0, const char *str, uint16_t scroll_offset)
 {

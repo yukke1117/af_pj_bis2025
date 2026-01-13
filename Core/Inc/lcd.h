@@ -20,6 +20,7 @@ void LCD_AllClear(void);
 void LCD_FillWhite(void);
 void LCD_SendLine4bit(uint16_t y, const uint8_t *buf);
 void LCD_DrawString4bit(uint16_t y0, const char *str);
+void LCD_DrawString4bitScaled(uint16_t y0, const char *str, uint8_t scale);
 void LCD_DrawImage(void);
 
 /* アニメーション関数 */

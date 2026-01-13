@@ -117,7 +117,7 @@ int main(void)
       .width = 176,
       .height = 176
   };
-  //LCD_Init(&lcd_config);
+  LCD_Init(&lcd_config);
   /* USER CODE END 2 */
 
   /* Initialize USER push-button, will be used to trigger an interrupt each time it's pressed.*/
@@ -145,6 +145,14 @@ int main(void)
     float voltage = ADS1220_ConvertToVoltage(adc_value);
     float current = ADS1220_ConvertToCurrent(voltage);
     printf("V: %.6f V, I: %.3f uA\r\n", voltage, current * 1e6f);
+
+    // LCD表示 (scale=10で大きく2行表示)
+    char lcd_buf[12];
+    snprintf(lcd_buf, sizeof(lcd_buf), "%.3fV", voltage);
+    LCD_DrawString4bitScaled(0, lcd_buf, 10);
+    snprintf(lcd_buf, sizeof(lcd_buf), "%.1fuA", current * 1e6f);
+    LCD_DrawString4bitScaled(88, lcd_buf, 10);
+
     HAL_Delay(100);
     /* USER CODE END WHILE */
 
