@@ -138,13 +138,25 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // DRDYがLowになるまで待つ
+    // CH1測定 (AIN0-AIN1)
+    ADS1220_SetChannel(ADS1220_CH1);
+    ADS1220_StartConversion();
     while (HAL_GPIO_ReadPin(ADC_DRDY_GPIO_Port, ADC_DRDY_Pin) == GPIO_PIN_SET);
+    int32_t adc1 = ADS1220_ReadData();
+    float v1 = ADS1220_ConvertToVoltage(adc1);
+    float i1 = ADS1220_ConvertToCurrent(v1);
 
-    int32_t adc_value = ADS1220_ReadData();
-    float voltage = ADS1220_ConvertToVoltage(adc_value);
-    float current = ADS1220_ConvertToCurrent(voltage);
-    printf("V: %.6f V, I: %.3f uA\r\n", voltage, current * 1e6f);
+    // CH2測定 (AIN2-AIN3)
+    ADS1220_SetChannel(ADS1220_CH2);
+    ADS1220_StartConversion();
+    while (HAL_GPIO_ReadPin(ADC_DRDY_GPIO_Port, ADC_DRDY_Pin) == GPIO_PIN_SET);
+    int32_t adc2 = ADS1220_ReadData();
+    float v2 = ADS1220_ConvertToVoltage(adc2);
+    float i2 = ADS1220_ConvertToCurrent(v2);
+
+    printf("CH1 V:%.6f V, I:%.3f uA | CH2 V:%.6f V, I:%.3f uA\r\n",
+           v1, i1 * 1e6f, v2, i2 * 1e6f);
+
     HAL_Delay(100);
     /* USER CODE END WHILE */
 
