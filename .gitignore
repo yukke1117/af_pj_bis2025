@@ -29,3 +29,6 @@ EWARM/*/Exe/
 
 # STM32CubeIDE
 *.launch
+
+# Claude Code
+.claude/
